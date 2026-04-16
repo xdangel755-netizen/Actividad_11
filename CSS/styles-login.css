@@ -1,0 +1,113 @@
+/* styles-login.css - Estilos para el Sistema de Matrícula (Sincronizado con Dashboard) */
+:root {
+    --primary-color: #3498DB;    /* Azul corporativo interactivo */
+    --secondary-color: #2C3E50;  /* Azul grisáceo oscuro corporativo */
+    --accent-color: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('../img/bg-login.png') no-repeat center center fixed;
+    background-size: cover;
+    overflow: hidden;
+}
+
+/* Capa de superposición con los colores del Sidebar */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.8), rgba(52, 152, 219, 0.6));
+    z-index: 1;
+}
+
+.login-card {
+    position: relative;
+    z-index: 2;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    width: 380px;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.titulo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 30px;
+}
+
+#loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#loginForm input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    outline: none;
+    background: #fff;
+}
+
+#loginForm input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+#loginForm button {
+    background: var(--primary-color);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+#loginForm button:hover {
+    background: #2980B9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* Estilo para el icono si lo hubiera */
+.login-card h1 i {
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+    .login-card {
+        width: 90%;
+        padding: 30px 20px;
+    }
+}
+

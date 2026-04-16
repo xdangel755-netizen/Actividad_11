@@ -1,0 +1,59 @@
+/* SELECTOR PADRE */
+:root{
+    --colorPrimario: #062df4;
+}
+
+header{
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px #000;
+}
+.menu{
+    width: 85%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.img-logo{
+        height: 3em;
+}
+.enlaces{
+    margin-top: .5em;
+}
+.enlaces a{
+    text-decoration: none;
+    color: #000;
+    font-weight: 600;
+    padding: .4em;
+}
+.icono-menu{
+    display: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .menu{
+        flex-direction: column;
+    }
+    .icono-menu{
+        display: block;
+        color: red;
+        font-size: 1.6em;
+    }
+    .logo{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1.5em;
+    }
+    .enlaces {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+}
