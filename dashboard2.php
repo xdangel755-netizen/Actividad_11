@@ -145,7 +145,7 @@ awesome/6.5.1/css/all.min.css">
                 <!-- MÓDULO DASHBOARD (ESTADÍSTICAS) -->
                 <div class="modulo-vista" id="modulo-dashboard">
                     <!-- BIENVENIDA PERSONALIZADA -->
-                    <div style="background: linear-gradient(135deg, #2c3e50, #6441a5); border-radius: 16px; padding: 28px 32px; margin-bottom: 28px; display: flex; align-items: center; gap: 20px; box-shadow: 0 8px 24px rgba(100,65,165,0.25);">
+                    <div style="background: linear-gradient(135deg, #1a2a6c, #2c3e50); border-radius: 16px; padding: 28px 32px; margin-bottom: 28px; display: flex; align-items: center; gap: 20px; box-shadow: 0 8px 24px rgba(26,42,108,0.25);">
                         <img src="<?php echo $avatar; ?>" alt="Avatar" width="70" height="70" style="border-radius: 50%; border: 3px solid #fff; object-fit: cover; flex-shrink: 0;">
                         <div>
                             <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 0.9rem;" id="saludo-hora">Bienvenido de vuelta</p>
@@ -171,7 +171,7 @@ awesome/6.5.1/css/all.min.css">
                                 <p>Total Estudiantes</p>
                             </div>
                         </div>
-                        <div class="kpi-card glass-panel kpi-secondary">
+                        <div class="kpi-card glass-panel kpi-quaternary">
                             <div class="kpi-icon"><i class="fa-solid fa-chalkboard"></i></div>
                             <div class="kpi-data">
                                 <h3 id="kpiTotalAulas">0</h3>
@@ -185,7 +185,7 @@ awesome/6.5.1/css/all.min.css">
                                 <p>Cursos Disponibles</p>
                             </div>
                         </div>
-                        <div class="kpi-card glass-panel kpi-quaternary">
+                        <div class="kpi-card glass-panel kpi-secondary">
                             <div class="kpi-icon"><i class="fa-solid fa-user-check"></i></div>
                             <div class="kpi-data">
                                 <h3 id="kpiAlumnosActivos">0</h3>
@@ -553,7 +553,7 @@ awesome/6.5.1/css/all.min.css">
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <div class="ficha-encabezado" style="display: flex; gap: 20px; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; margin-bottom: 20px;">
-                    <div id="det-avatar" style="width:80px; height:80px; border-radius:10px; border:3px solid #6441a5; background:linear-gradient(135deg,#6441a5,#2c3e50); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <div id="det-avatar" style="width:80px; height:80px; border-radius:10px; border:3px solid #2c3e50; background:linear-gradient(135deg,#2c3e50,#2c3e50); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                         <span id="det-iniciales" style="color:#fff; font-size:1.8rem; font-weight:700; letter-spacing:1px;"></span>
                     </div>
                     <div>
@@ -564,14 +564,14 @@ awesome/6.5.1/css/all.min.css">
 
                 <div class="ficha-secciones" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="ficha-col">
-                        <h4 style="font-size: 0.9rem; color: #6441a5; text-transform: uppercase; margin-bottom: 10px; border-left: 3px solid #6441a5; padding-left: 8px;">Información Personal</h4>
+                        <h4 style="font-size: 0.9rem; color: #2c3e50; text-transform: uppercase; margin-bottom: 10px; border-left: 3px solid #2c3e50; padding-left: 8px;">Información Personal</h4>
                         <p><strong>Género:</strong> <span id="det-genero">-</span></p>
                         <p><strong>Edad:</strong> <span id="det-edad">-</span> años</p>
                         <p><strong>F. Nacimiento:</strong> <span id="det-fecha-nac">-</span></p>
                         <p><strong>Estado:</strong> <span id="det-estado" class="status-badge">-</span></p>
                     </div>
                     <div class="ficha-col">
-                        <h4 style="font-size: 0.9rem; color: #6441a5; text-transform: uppercase; margin-bottom: 10px; border-left: 3px solid #6441a5; padding-left: 8px;">Contacto y Red</h4>
+                        <h4 style="font-size: 0.9rem; color: #2c3e50; text-transform: uppercase; margin-bottom: 10px; border-left: 3px solid #2c3e50; padding-left: 8px;">Contacto y Red</h4>
                         <p><strong>Celular:</strong> <span id="det-celular">-</span></p>
                         <p><strong>Correo:</strong> <span id="det-correo" style="font-size: 0.85rem;">-</span></p>
                         <p><strong>Usuario:</strong> <span id="det-username" style="font-weight: bold; color: #2e3192;">-</span></p>
@@ -579,7 +579,7 @@ awesome/6.5.1/css/all.min.css">
                 </div>
 
                 <div class="ficha-col" style="margin-top: 20px;">
-                    <h4 style="font-size: 0.9rem; color: #6441a5; text-transform: uppercase; margin-bottom: 10px; border-left: 3px solid #6441a5; padding-left: 8px;">Apoderado y Dirección</h4>
+                    <h4 style="font-size: 0.9rem; color: #2c3e50; text-transform: uppercase; margin-bottom: 10px; border-left: 3px solid #2c3e50; padding-left: 8px;">Apoderado y Dirección</h4>
                     <p><strong>Dirección:</strong> <span id="det-direccion">-</span></p>
                     <p><strong>Apoderado:</strong> <span id="det-apoderado">-</span></p>
                     <p><strong>Celular Apoderado:</strong> <span id="det-cel-apoderado">-</span></p>
@@ -606,11 +606,16 @@ awesome/6.5.1/css/all.min.css">
         </div>
     </div>
 
+    <link rel="stylesheet" href="css/styles-dashboard.css?v=1.1_notif_anim">
     <!-- ARCHIVO JS-->
-    <script src="js/dashboard.js?v=10.7_center"></script>
+    <script src="js/dashboard.js?v=10.15_pdf_half"></script>
 
     <!-- LIBRERIA SWEETALERT2-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- LIBRERIAS PARA PDF (jsPDF) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
     <!-- LIBRERIA BOOTSTRAP-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

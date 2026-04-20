@@ -10,7 +10,7 @@ header("Pragma: no-cache");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -53,13 +53,13 @@ header("Pragma: no-cache");
 
     <!-- Limpiar campos al cargar (por retroceso o refresco) -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Se asegura de que los campos estén vacíos incluso si se le da al botón "Atrás"
             $('#txtUsuario').val('').blur();
             $('#txtPassword').val('').blur();
-            
+
             // Refuerzo para navegadores que guardan el estado
-            window.onpageshow = function(event) {
+            window.onpageshow = function (event) {
                 document.getElementById('txtUsuario').value = "";
                 document.getElementById('txtPassword').value = "";
             };

@@ -1,5 +1,5 @@
-<?php 
-require_once 'php/auth_check.php'; 
+<?php
+require_once 'php/auth_check.php';
 $nombre_usuario = $_SESSION['usuario_nombre'];
 
 // Lógica para elegir el avatar según el usuario
@@ -21,7 +21,8 @@ if (strtoupper($nombre_usuario) === 'ARIANA') {
     <title>Dashboard Principal</title>
 
     <!-- FRAMEWORK BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <!-- LIBRERÍA DE ICONOS -->
     <script src="https://kit.fontawesome.com/812c8ee19a.js" crossorigin="anonymous"></script>
@@ -30,7 +31,9 @@ if (strtoupper($nombre_usuario) === 'ARIANA') {
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
     <!-- FUENTES DE GOOGLE FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 
     <!-- LIBRERÍA AJAX (Font Awesome local) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -56,21 +59,30 @@ if (strtoupper($nombre_usuario) === 'ARIANA') {
 
             <nav class="sidebar-nav">
                 <ul>
-                    <li id="menu-dashboard" class="active"><a href="dashboard.php"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-                    <li id="menu-estudiantes"><a href="dashboard2.php?modulo=estudiantes"><i class="fa-solid fa-users"></i> Estudiantes</a></li>
-                    <li id="menu-aulas"><a href="dashboard2.php?modulo=aulas"><i class="fa-solid fa-chalkboard"></i> Aulas</a></li>
-                    <li id="menu-cursos"><a href="dashboard2.php?modulo=cursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
-                    <li id="menu-inscripciones"><a href="dashboard2.php?modulo=inscripciones"><i class="fa-solid fa-file-contract"></i> Inscripciones</a></li>
-                    <li id="menu-pagos"><a href="dashboard2.php?modulo=pagos"><i class="fa-solid fa-money-bill-wave"></i> Pagos</a></li>
-                    <li id="menu-configuracion"><a href="dashboard2.php?modulo=configuracion"><i class="fa-solid fa-gear"></i> Configuración</a></li>
+                    <li id="menu-dashboard" class="active"><a href="dashboard.php"><i class="fa-solid fa-house"></i>
+                            Dashboard</a></li>
+                    <li id="menu-estudiantes"><a href="dashboard2.php?modulo=estudiantes"><i
+                                class="fa-solid fa-users"></i> Estudiantes</a></li>
+                    <li id="menu-aulas"><a href="dashboard2.php?modulo=aulas"><i class="fa-solid fa-chalkboard"></i>
+                            Aulas</a></li>
+                    <li id="menu-cursos"><a href="dashboard2.php?modulo=cursos"><i class="fa-solid fa-book"></i>
+                            Cursos</a></li>
+                    <li id="menu-inscripciones"><a href="dashboard2.php?modulo=inscripciones"><i
+                                class="fa-solid fa-file-contract"></i> Inscripciones</a></li>
+                    <li id="menu-pagos"><a href="dashboard2.php?modulo=pagos"><i
+                                class="fa-solid fa-money-bill-wave"></i> Pagos</a></li>
+                    <li id="menu-configuracion"><a href="dashboard2.php?modulo=configuracion"><i
+                                class="fa-solid fa-gear"></i> Configuración</a></li>
                 </ul>
             </nav>
 
             <div class="sidebar-footer">
                 <div class="user-profile">
-                    <img src="<?php echo $avatar; ?>" alt="Avatar" width="40" height="40" style="border-radius: 50%; object-fit: cover;">
+                    <img src="<?php echo $avatar; ?>" alt="Avatar" width="40" height="40"
+                        style="border-radius: 50%; object-fit: cover;">
                     <div class="user-info">
-                        <h3 style="font-size: 0.9rem;"><?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Admin'); ?></h3>
+                        <h3 style="font-size: 0.9rem;">
+                            <?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Admin'); ?></h3>
                         <span style="font-size: 0.75rem; color: #888;">Administrador</span>
                     </div>
                 </div>
@@ -87,16 +99,22 @@ if (strtoupper($nombre_usuario) === 'ARIANA') {
 
                 <div class="header-right">
                     <div class="notification-wrapper" style="position: relative; margin-right: 25px;">
-                        <i class="fa-solid fa-bell" id="btnNotificaciones" style="cursor: pointer; font-size: 1.2rem; color: #555;"></i>
-                        <span class="badge" style="position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; padding: 2px 5px; font-size: 0.7rem;">3</span>
-                        
-                        <div id="dropdownNotificaciones" style="display: none; position: absolute; right: 0; top: 35px; background: white; border: 1px solid #ddd; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 8px; width: 280px; z-index: 1000;">
-                            <div style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; background: #f9f9f9; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">
-                                Notificaciones 
-                                <span id="notif-count" style="background: red; color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.65rem;">0</span>
+                        <i class="fa-solid fa-bell" id="btnNotificaciones"
+                            style="cursor: pointer; font-size: 1.2rem; color: #555;"></i>
+                        <span class="badge"
+                            style="position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; padding: 2px 5px; font-size: 0.7rem;">3</span>
+
+                        <div id="dropdownNotificaciones"
+                            style="display: none; position: absolute; right: 0; top: 35px; background: white; border: 1px solid #ddd; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 8px; width: 280px; z-index: 1000;">
+                            <div
+                                style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; background: #f9f9f9; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">
+                                Notificaciones
+                                <span id="notif-count"
+                                    style="background: red; color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.65rem;">0</span>
                             </div>
                             <div id="lista-notificaciones" style="max-height: 300px; overflow-y: auto;">
-                                <div style="padding: 20px; text-align: center; color: #888; font-size: 0.85rem;">Cargando...</div>
+                                <div style="padding: 20px; text-align: center; color: #888; font-size: 0.85rem;">
+                                    Cargando...</div>
                             </div>
                         </div>
                     </div>
@@ -108,14 +126,25 @@ if (strtoupper($nombre_usuario) === 'ARIANA') {
                     </div>
 
                     <div class="user-dropdown-wrapper" style="position: relative; cursor: pointer;">
-                        <div class="user-dropdown" id="btnUserMenu" style="display: flex; align-items: center; gap: 10px;">
-                            <img src="<?php echo $avatar; ?>" alt="Usuario" width="50" height="50" style="border-radius: 50%; object-fit: cover;">
-                            <h3 style="margin: 0; font-size: 1rem; color: #555;"><?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Admin'); ?> <i class="fa-solid fa-chevron-down"></i></h3>
+                        <div class="user-dropdown" id="btnUserMenu"
+                            style="display: flex; align-items: center; gap: 10px;">
+                            <img src="<?php echo $avatar; ?>" alt="Usuario" width="50" height="50"
+                                style="border-radius: 50%; object-fit: cover;">
+                            <h3 style="margin: 0; font-size: 1rem; color: #555;">
+                                <?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Admin'); ?> <i
+                                    class="fa-solid fa-chevron-down"></i></h3>
                         </div>
-                        
-                        <div id="dropdownUser" style="display: none; position: absolute; right: 0; top: 60px; background: white; border: 1px solid #ddd; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 8px; width: 200px; z-index: 1000;">
-                            <a href="#" onclick="Swal.fire('Información', 'Versión de la plataforma: 2.5', 'info'); return false;" style="display: block; padding: 12px 15px; color: #333; text-decoration: none; border-bottom: 1px solid #eee; font-size: 0.9rem;"><i class="fa-solid fa-circle-info" style="margin-right: 8px;"></i> Acerca de</a>
-                            <a href="php/logout.php" style="display: block; padding: 12px 15px; color: #e74a3b; text-decoration: none; font-size: 0.9rem;"><i class="fa-solid fa-right-from-bracket" style="margin-right: 8px;"></i> Cerrar sesión</a>
+
+                        <div id="dropdownUser"
+                            style="display: none; position: absolute; right: 0; top: 60px; background: white; border: 1px solid #ddd; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 8px; width: 200px; z-index: 1000;">
+                            <a href="#"
+                                onclick="Swal.fire('Información', 'Versión de la plataforma: 2.5', 'info'); return false;"
+                                style="display: block; padding: 12px 15px; color: #333; text-decoration: none; border-bottom: 1px solid #eee; font-size: 0.9rem;"><i
+                                    class="fa-solid fa-circle-info" style="margin-right: 8px;"></i> Acerca de</a>
+                            <a href="php/logout.php"
+                                style="display: block; padding: 12px 15px; color: #e74a3b; text-decoration: none; font-size: 0.9rem;"><i
+                                    class="fa-solid fa-right-from-bracket" style="margin-right: 8px;"></i> Cerrar
+                                sesión</a>
                         </div>
                     </div>
                 </div>
@@ -126,7 +155,8 @@ if (strtoupper($nombre_usuario) === 'ARIANA') {
                 <div class="modulo-vista" id="modulo-inicio">
                     <div class="welcome-banner glass-panel">
                         <div class="banner-content">
-                            <h2>Bienvenido al panel, <?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Administrador'); ?></h2>
+                            <h2>Bienvenido al panel,
+                                <?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Administrador'); ?></h2>
                             <p>Aquí tienes un resumen visual del estado general de la institución.</p>
                         </div>
                         <i class="fa-solid fa-chart-line banner-icon"></i>
@@ -162,7 +192,6 @@ if (strtoupper($nombre_usuario) === 'ARIANA') {
                             </div>
                         </div>
                     </div>
-
                     <div class="charts-container">
                         <div class="chart-card glass-panel">
                             <h2>Distribución por Género</h2>

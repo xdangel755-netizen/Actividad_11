@@ -40,6 +40,7 @@ $(document).ready(function () {
     const dtButtons = (title) => [
         { extend: 'excelHtml5', text: '<i class="fa-solid fa-file-excel"></i> Excel', title: title, className: 'btn btn-success' },
         { extend: 'pdfHtml5', text: '<i class="fa-solid fa-file-pdf"></i> PDF', title: title, className: 'btn btn-danger', orientation: 'landscape', pageSize: 'A4' },
+        { extend: 'csvHtml5', text: '<i class="fa-solid fa-file-csv"></i> CSV', title: title, className: 'btn btn-secondary' },
         { extend: 'print', text: '<i class="fa-solid fa-print"></i> Imprimir', title: title, className: 'btn btn-info' }
     ];
 
@@ -94,15 +95,13 @@ $(document).ready(function () {
     }
 
     function cargarDashboard() {
-        console.log("Iniciando carga de estadísticas...");
         $.ajax({
-            url: "php/crud-dashboard.php?v=9.5_img_fix",
+            url: "php/api_dashboard.php",
             type: "GET",
             dataType: "json",
             success: function(respuesta) {
-                console.log("DEBUG - Datos Dashboard recibidos:", respuesta);
-                if(respuesta.exito && respuesta.datos) {
-                    let d = respuesta.datos;
+                if(respuesta.exito && respuesta.data) {
+                    let d = respuesta.data;
                     
                     // Animación de números para KPIs
                     animarNumero('#kpiTotalAlumnos', d.total_alumnos);
@@ -110,34 +109,7 @@ $(document).ready(function () {
                     animarNumero('#kpiTotalCursos', d.total_cursos);
                     animarNumero('#kpiAlumnosActivos', d.alumnos_activos);
 
-                    // Preparar datos para Gráfico 1 (Género)
-                    let labelsG = [];
-                    let dataG = [];
-                    let coloresG = [];
-                    if (d.generos && Array.isArray(d.generos)) {
-                        d.generos.forEach(g => {
-                            labelsG.push(g.GENERO === 'M' ? 'Masculino' : (g.GENERO === 'F' ? 'Femenino' : 'Otro'));
-                            dataG.push(g.CANTIDAD);
-                            if(g.GENERO === 'M') coloresG.push('#6441a5'); 
-                            else if(g.GENERO === 'F') coloresG.push('#e84393'); 
-                            else coloresG.push('#f39c12');
-                        });
-                    }
-
-                    // Preparar datos para Gráfico 2 (Estado)
-                    let labelsE = [];
-                    let dataE = [];
-                    let coloresE = [];
-                    if (d.estados && Array.isArray(d.estados)) {
-                        d.estados.forEach(e => {
-                            labelsE.push(e.ESTADO);
-                            dataE.push(e.CANTIDAD);
-                            if(e.ESTADO === 'Activo') coloresE.push('#1cc88a');
-                            else if(e.ESTADO === 'Inactivo') coloresE.push('#e74a3b');
-                            else coloresE.push('#f6c23e');
-                        });
-                    }
-
+                    // Gráficos usando datos pre-procesados de la API premium
                     try {
                         let canvas1 = document.getElementById('chartGenero');
                         if (canvas1) {
@@ -145,10 +117,10 @@ $(document).ready(function () {
                             chart1 = new Chart(canvas1, {
                                 type: 'doughnut',
                                 data: {
-                                    labels: labelsG,
+                                    labels: d.genero_dist.labels,
                                     datasets: [{
-                                        data: dataG,
-                                        backgroundColor: coloresG,
+                                        data: d.genero_dist.data,
+                                        backgroundColor: d.genero_dist.colors,
                                         borderWidth: 2,
                                         borderColor: '#ffffff'
                                     }]
@@ -167,10 +139,10 @@ $(document).ready(function () {
                             chart2 = new Chart(canvas2, {
                                 type: 'pie',
                                 data: {
-                                    labels: labelsE,
+                                    labels: d.estado_dist.labels,
                                     datasets: [{
-                                        data: dataE,
-                                        backgroundColor: coloresE,
+                                        data: d.estado_dist.data,
+                                        backgroundColor: d.estado_dist.colors,
                                         borderWidth: 2,
                                         borderColor: '#ffffff'
                                     }]
@@ -388,6 +360,18 @@ $(document).ready(function () {
     $('#formAlumno').submit(function (e) {
         e.preventDefault();
 
+        // VALIDACIÓN DE SEGURIDAD (DNI y CELULAR)
+        const dni = $('#dni').val();
+        const cel = $('#celular').val();
+        if (dni.length !== 8 || isNaN(dni)) {
+            Swal.fire('Atención', 'El DNI debe tener exactamente 8 caracteres numéricos.', 'warning');
+            return;
+        }
+        if (cel.length !== 9 || isNaN(cel)) {
+            Swal.fire('Atención', 'El Celular debe tener exactamente 9 caracteres numéricos.', 'warning');
+            return;
+        }
+
         let id = $('#id_alumno').val();
         let opcion = $('#opcion').val();
         let metodo = (opcion == '1') ? 'POST' : 'PUT';
@@ -547,7 +531,7 @@ $(document).ready(function () {
                 <div class="det-item"><p><strong>Sección:</strong> <span>${item.SECCION}</span></p></div>
                 <hr>
                 <div class="det-item"><p><strong>Vacantes Totales:</strong> <span>${item.VACANTES_TOTALES}</span></p></div>
-                <div class="det-item"><p><strong>Vacantes Disponibles:</strong> <span style="color: #6441a5; font-weight: bold;">${item.VACANTES_DISPONIBLES}</span></p></div>
+                <div class="det-item"><p><strong>Vacantes Disponibles:</strong> <span style="color: #2c3e50; font-weight: bold;">${item.VACANTES_DISPONIBLES}</span></p></div>
             `;
         } else if (tipo === 'curso') {
             titulo = "Detalles del Curso";
@@ -649,7 +633,7 @@ $(document).ready(function () {
                     { 
                         data: "VACANTES_DISPONIBLES",
                         className: "text-center",
-                        render: (data) => `<span style="font-weight:bold; color:#6441a5">${data}</span>` 
+                        render: (data) => `<span style="font-weight:bold; color:#2c3e50">${data}</span>` 
                     },
                     {
                         data: null,
@@ -774,7 +758,7 @@ $(document).ready(function () {
                     { 
                         data: "COD_PAGO", 
                         className: "text-center", 
-                        render: (data) => `<span style="font-weight:bold; color:#6441a5">${data}</span>` 
+                        render: (data) => `<span style="font-weight:bold; color:#2c3e50">${data}</span>` 
                     },
                     { 
                         data: "ESTADO_PAGO", 
@@ -836,7 +820,7 @@ $(document).ready(function () {
                             else if(userClean === 'ANGEL' || userClean === 'YO') avatar = "yo.jpg";
                             
                             return `<img src="img/${avatar}" 
-                                         style="width:35px; height:35px; border-radius:50%; border:2px solid #6441a5; object-fit: cover;" 
+                                         style="width:35px; height:35px; border-radius:50%; border:2px solid #2c3e50; object-fit: cover;" 
                                          onerror="this.onerror=null; this.outerHTML='<i class=\'fa-solid fa-user-circle\' style=\'font-size:30px; color:#ccc;\'></i>';">`;
                         }
                     },
@@ -877,10 +861,18 @@ $(document).ready(function () {
     function cargarNotificaciones() {
         $.get('php/api_notificaciones.php', function(res) {
             if(res.exito) {
+                const badge = $('.badge');
+                const oldCount = badge.text();
                 const count = res.notificaciones.length;
 
+                // Si el número cambió, le damos un efecto de pulso animado
+                if (count > oldCount && count > 0) {
+                    badge.addClass('notif-pulse');
+                    setTimeout(() => badge.removeClass('notif-pulse'), 1000);
+                }
+
                 // Actualizar AMBOS badges (clase .badge y id #notif-count)
-                $('.badge').text(count);
+                badge.text(count);
                 $('#notif-count').text(count);
 
                 // Ocultar/mostrar badge
@@ -897,7 +889,7 @@ $(document).ready(function () {
                 } else {
                     res.notificaciones.forEach(n => {
                         let icon = n.icon || 'fa-circle-info';
-                        let color = n.color || '#6441a5';
+                        let color = n.color || '#2c3e50';
                         let texto = n.texto || n.MENSAJE || 'Notificación';
                         html += `
                             <div class="notification-item" style="display:flex; align-items:center; gap:12px; padding:12px 15px; border-bottom:1px solid #f0f0f0;">
@@ -1143,6 +1135,50 @@ $(document).ready(function () {
 
 
     /* ======================================================== 
+       SECCIÓN DE ADMINISTRADORES (Configuración)
+       ======================================================== */
+
+    $(document).on('click', '.btn-borrar-usuario', function () {
+        let idUser = $(this).data('id');
+
+        Swal.fire({
+            title: '¿Eliminar Administrador?',
+            icon: 'warning',
+            text: 'Esta acción no se puede deshacer.',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "php/api_usuario.php?id=" + idUser,
+                    type: "DELETE",
+                    success: function (respuesta) {
+                        if (respuesta.exito) {
+                            cargarUsuarios(); 
+                            Swal.fire('Eliminado', respuesta.mensaje, 'success');
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '.btn-editar-usuario', function () {
+        let userData = $(this).data('user');
+        
+        $('#id_usuario').val(userData.ID_USUARIO);
+        $('#usuario_username').val(userData.USERNAME);
+        $('#usuario_password').removeAttr('required'); // No obligatorio al editar
+        
+        $('#opcion_usuario').val('2'); // EDITAR
+        $('#modalTituloUsuario').text('Editar Administrador');
+        $('#modalUsuario').fadeIn();
+    });
+
+
+    /* ======================================================== 
        SECCIÓN DE INSCRIPCIONES A CURSOS
        ======================================================== */
 
@@ -1251,7 +1287,7 @@ $(document).ready(function () {
         $.get('php/api_aula.php', function(respuesta) {
             let select = $('#pago_aula_select');
             select.empty().append('<option value="">Seleccione Aula...</option>');
-            $.each(respuesta.aulas, function(i, aula) {
+            $.each(respuesta.data, function(i, aula) {
                 select.append(`<option value="${aula.ID_AULA}">${aula.NIVEL} - Grado ${aula.GRADO} "${aula.SECCION}"</option>`);
             });
         }, 'json');
@@ -1321,9 +1357,11 @@ $(document).ready(function () {
         let id = $(this).data('id');
         Swal.fire({
             title: '¿Eliminar Registro?',
+            text: "Esta acción no se puede deshacer.",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Sí, eliminar'
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Sí, Eliminar'
         }).then((result) => {
             if(result.isConfirmed) {
                 $.ajax({
@@ -1341,61 +1379,79 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.btn-recibo-pago', function () {
-        let p = $(this).data('pago');
-        let d = new Date();
-        let fecha = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+    // GENERACIÓN DE PDF RECIBO DE PAGO (Usando jsPDF)
+    $(document).on('click', '.btn-pdf-pago', function () {
+        const item = $(this).data('pago');
+        const { jsPDF } = window.jspdf;
+        // Formato A5 horizontal (Media hoja A4)
+        const doc = new jsPDF('l', 'mm', 'a5');
 
-        let docDefinition = {
-            content: [
-                {
-                    text: 'COMPROBANTE DE PAGO - MATRÍCULA',
-                    style: 'header',
-                    alignment: 'center'
-                },
-                {
-                    text: 'Sistema de Gestión Educativa ABC',
-                    style: 'subheader',
-                    alignment: 'center'
-                },
-                {
-                    text: 'Fecha de Emisión: ' + fecha,
-                    alignment: 'right',
-                    margin: [0, 0, 0, 20]
-                },
-                {
-                    style: 'tableExample',
-                    table: {
-                        widths: [150, '*'],
-                        body: [
-                            [{ text: 'INFORMACIÓN DEL ESTUDIANTE', colSpan: 2, style: 'tableHeader', alignment: 'center' }, ''],
-                            ['Nombres Completos:', p.NOMBRES + ' ' + p.APELLIDO],
-                            ['Aula Asignada:', p.NIVEL + ' ' + p.GRADO + ' "' + p.SECCION + '"'],
-                            [{ text: 'DETALLES DE LA TRANSACCIÓN', colSpan: 2, style: 'tableHeader', alignment: 'center', margin: [0, 10, 0, 0] }, ''],
-                            ['Código de Pago:', { text: p.COD_PAGO, bold: true }],
-                            ['Estado del Pago:', { text: p.ESTADO_PAGO, color: p.ESTADO_PAGO === 'PAGADO' ? 'green' : 'red', bold: true }],
-                            ['Monto Cancelado:', 'S/ 150.00']
-                        ]
-                    },
-                    layout: 'lightHorizontalLines'
-                },
-                {
-                    text: 'Este documento es un comprobante de pago válido.',
-                    margin: [0, 40, 0, 0],
-                    alignment: 'center',
-                    color: 'gray'
-                }
-            ],
-            styles: {
-                header: { fontSize: 20, bold: true, color: '#2c3e50', margin: [0, 0, 0, 5] },
-                subheader: { fontSize: 14, bold: true, color: '#7f8c8d', margin: [0, 0, 0, 20] },
-                tableHeader: { bold: true, fontSize: 13, color: 'black' },
-                tableExample: { margin: [0, 5, 0, 15] }
-            }
-        };
+        // Configuración de Colores (Azul Corporativo #2c3e50)
+        const primaryColor = [44, 62, 80]; 
+        const secondaryColor = [52, 73, 94]; 
 
-        // Generar y descargar/abrir
-        pdfMake.createPdf(docDefinition).open();
+        // 1. Cabecera / Fondo (Reducido para A5)
+        doc.setFillColor(...primaryColor);
+        doc.rect(0, 0, 210, 40, 'F');
+        
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(22);
+        doc.setFont("helvetica", "bold");
+        doc.text("SISTEMA DE MATRÍCULA", 105, 18, { align: "center" });
+        
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+        doc.text("RECIBO OFICIAL DE PAGO", 105, 28, { align: "center" });
+
+        // 2. Cuerpo del Documento
+        doc.setTextColor(...secondaryColor);
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "bold");
+        doc.text(`CÓDIGO DE RESERVA: ${item.COD_PAGO}`, 15, 50);
+        
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.text(`Fecha de Impresión: ${new Date().toLocaleString()}`, 15, 56);
+        
+        // Cuadro de Información del Alumno (Subido)
+        doc.setDrawColor(...primaryColor);
+        doc.setLineWidth(0.5);
+        doc.rect(15, 65, 180, 35);
+        
+        doc.setFont("helvetica", "bold");
+        doc.text("DATOS DEL ESTUDIANTE", 20, 73);
+        doc.setFont("helvetica", "normal");
+        doc.text(`Nombre Completo: ${item.NOMBRES} ${item.APELLIDO}`, 20, 81);
+        doc.text(`Aula / Grado: ${item.NIVEL} - ${item.GRADO}° "${item.SECCION}"`, 20, 89);
+        doc.text(`Estado del Pago: ${item.ESTADO_PAGO}`, 20, 97);
+
+        // 3. Tabla de Conceptos (AutoTable - startY ajustado)
+        const monto = item.ESTADO_PAGO === 'PENDIENTE' ? 'S/ 300.00' : 'S/ 300.00';
+        const estadoMonto = item.ESTADO_PAGO === 'PENDIENTE' ? '(PENDIENTE)' : '(PAGADO)';
+
+        if (typeof doc.autoTable === 'function') {
+            doc.autoTable({
+                startY: 105,
+                head: [['Descripción del Concepto', 'Monto', 'Operación']],
+                body: [
+                    ['Matrícula Escolar y Derecho de Vacante', `${monto} ${estadoMonto}`, item.COD_PAGO]
+                ],
+                headStyles: { fillColor: primaryColor, textColor: [255, 255, 255] },
+                alternateRowStyles: { fillColor: [245, 245, 245] },
+                margin: { left: 15, right: 15 },
+                styles: { fontSize: 9 }
+            });
+        }
+
+        // 4. Footer / Firma (Ajustado para dar más aire)
+        let finalY = (doc.lastAutoTable ? doc.lastAutoTable.finalY : 105) + 18;
+        
+        doc.line(70, finalY, 140, finalY);
+        doc.setFontSize(9);
+        doc.text("Firma de Administración", 105, finalY + 5, { align: "center" });
+        
+        // Guardar PDF
+        doc.save(`Recibo_${item.COD_PAGO}.pdf`);
     });
 
     // SALUDO DINÁMICO SEGÚN HORA DEL DÍA
@@ -1420,7 +1476,11 @@ $(document).ready(function () {
         cambiarModulo(savedModulo);
     }
 
-    // Cargar componentes globales
+    // Cargar componentes globales por primera vez
     cargarNotificaciones();
+    
+    // Activar POLLING en tiempo real: Actualizar campanita cada 7 segundos automáticamente
+    setInterval(cargarNotificaciones, 7000);
+
     console.log("SISTEMA LISTO Y CARGADO.");
 });
